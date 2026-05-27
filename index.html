@@ -1127,12 +1127,22 @@ document.getElementById('btn-play').addEventListener('click', () => {
   playArea.style.display = 'block';
   document.getElementById('status').textContent = 'Loading game...';
 
-  // Give the game time to initialise, then send level data
-  setTimeout(() => sendLevelRetry(data, 10), 600);
+  // Give the game time to initialise, then send level data + unmute
+  setTimeout(() => {
+    sendGameMessage({ type: 'gameVisible', value: true });
+    sendLevelRetry(data, 10);
+  }, 600);
 });
+
+function sendGameMessage(data) {
+  if (gameFrame.contentWindow) {
+    gameFrame.contentWindow.postMessage(JSON.stringify(data), '*');
+  }
+}
 
 playClose.addEventListener('click', () => {
   playArea.style.display = 'none';
+  sendGameMessage({ type: 'gameVisible', value: false });
 });
 
 // ══════════════════════════════════════════════════════════════════════════════
