@@ -1,0 +1,103 @@
+sword-game.js?cachebust=1509980606:620 Windows Detected(0)
+sword-game.js?cachebust=1509980606:620 Chrome detected
+sword-game.js?cachebust=1509980606:620 Windows Detected(0)
+sword-game.js?cachebust=1509980606:620 Chrome detected
+sword-game.js?cachebust=1509980606:620 Browser CAN play MP3
+sword-game.js?cachebust=1509980606:620 Browser CAN play OGG
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sword-game_texture_0.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sword-game_texture_1.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF2.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF3.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF4.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF5.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF6.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF7.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF8.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF9.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF10.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF11.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF12.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF13.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF14.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/particles/IDR_GIF15.png
+sword-game.js?cachebust=1509980606:620 Loading: html5game/bgm_que_filter
+sword-game.js?cachebust=1509980606:620 Loading: html5game/bgm_que
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_jump
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_throw_one
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_throw_two
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_time
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_tp_one
+sword-game.js?cachebust=1509980606:620 Loading: html5game/sfx_tp_two
+sword-game.js?cachebust=1509980606:620 Audio Engine => Loading
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:0/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:0/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:1/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:1/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:2/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:2/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:2/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:3/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:3/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:3/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:4/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:4/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:4/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:5/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:5/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:5/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:6/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:6/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:6/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:7/2/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:7/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:7/4/200
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/sword-game_texture_0.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF2.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF3.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF4.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF5.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF6.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF7.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF8.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF9.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF10.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF11.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF12.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF13.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF14.png
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/particles/IDR_GIF15.png
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:0/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:1/3/200
+sword-game.js?cachebust=1509980606:620 ImageLoaded: https://amz6a.github.io/sword-game-web-ver/game/html5game/sword-game_texture_1.png
+sword-game.js?cachebust=1509980606:620 Audio Engine => Running
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:1/4/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:0/3/200
+sword-game.js?cachebust=1509980606:620 Audio_SoundReadyStateChange:targetid/readyState/status:0/4/200
+sword-game.js?cachebust=1509980606:620 Entering main loop...
+sword-game.js?cachebust=1509980606:620 [anim_load_json] Loaded OK — 11 bones, 13 animations.
+sword-game.js?cachebust=1509980606:620 [anim_load_json] Loaded OK — 11 bones, 13 animations.
+sword-game.js?cachebust=1509980606:620 [scr_load_level] Created player at (224, 144)
+sword-game.js?cachebust=1509980606:620 [scr_load_level] Level loaded successfully — 4 blocks, 1 enemies
+sword-game.js?cachebust=1509980606:620 Unhandled Exception - Uncaught { message : "undefined value in expression", longMessage : "undefined value in expression", stacktrace : [ "function _P6("undefined value in expression")
+","function _77([undefined])
+","function _C7([instance], [instance], ___struct___, "fall", 0.85, "idle", 0.05, 224, 144, -1, 0)
+","function _I4([instance], [instance])
+","function(769, 0, [instance], [instance])
+","function(769, 0, [instance], [instance])
+","function(769, 0)
+","function _oT3()
+","function _US3()
+","function _lS3(1004.4)
+" ], script : "", line : -1 } in file https://amz6a.github.io/sword-game-web-ver/game/html5game/sword-game.js?cachebust=1509980606 at line 621
+sword-game.js?cachebust=1509980606:620 ###game_end###-1
+sword-game.js?cachebust=1509980606:621 Uncaught _VU
+_P6 @ sword-game.js?cachebust=1509980606:621
+_77 @ sword-game.js?cachebust=1509980606:3870
+_C7 @ sword-game.js?cachebust=1509980606:65
+_I4 @ sword-game.js?cachebust=1509980606:224
+_Hg3._Zy @ sword-game.js?cachebust=1509980606:3365
+_0m1._Zy @ sword-game.js?cachebust=1509980606:3185
+_1Q2._Zy @ sword-game.js?cachebust=1509980606:3230
+_oT3 @ sword-game.js?cachebust=1509980606:4039
+_US3 @ sword-game.js?cachebust=1509980606:4045
+_lS3 @ sword-game.js?cachebust=1509980606:4027
