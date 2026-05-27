@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sword-game Level Editor</title>
+<style>
+:root {
+  --bg: #0d0d12; --bg2: #141420; --bg3: #1c1c2e;
+  --panel: #1a1a28; --border: #2a2a3e; --accent: #7c5cfc;
+  --accent2: #a07cfc; --text: #c8c8e0; --text2: #7878a0;
+  --good: #5cfc7c; --warn: #fcfc5c; --danger: #fc5c7c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);
+  display:grid;grid-template-rows:auto 1fr auto;user-select:none}
+#header{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--panel);
+  border-bottom:1px solid var(--border);flex-wrap:wrap;font-size:12px;z-index:10}
+#header h1{font-size:13px;font-weight:700;color:var(--accent2);margin-right:12px}
+.tool-btn{padding:4px 8px;border:1px solid var(--border);background:var(--bg3);
+  color:var(--text);border-radius:4px;cursor:pointer;font-size:11px;transition:.15s}
+.tool-btn:hover{border-color:var(--accent)}
+.tool-btn.active{background:var(--accent);border-color:var(--accent2);color:#fff}
+.tool-btn.danger{border-color:var(--danger)}
+.tool-btn.danger:hover{background:rgba(252,92,124,.2)}
+.sep{width:1px;height:22px;background:var(--border);margin:0 4px}
+#main{display:flex;flex:1;overflow:hidden}
+#canvas-wrap{flex:1;position:relative;overflow:hidden;background:var(--bg2)}
+canvas{display:block;width:100%;height:100%;cursor:crosshair}
+#sidebar{width:220px;background:var(--panel);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;font-size:11px;flex-shrink:0}
+.side-section{padding:8px 10px;border-bottom:1px solid var(--border)}
+.side-section h2{font-size:10px;text-transform:uppercase;letter-spacing:1px;
+  color:var(--text2);margin-bottom:5px}
+.field{display:flex;flex-direction:column;gap:2px;margin-bottom:5px}
+.field label{font-size:10px;color:var(--text2)}
+.field input,.field select{background:var(--bg3);border:1px solid var(--border);
+  color:var(--text);padding:3px 6px;border-radius:3px;font-size:11px;width:100%}
+.field input:focus{outline:none;border-color:var(--accent)}
+.field input[type=number]{width:100%}
+.prop-row{display:flex;gap:4px}
+.prop-row .field{flex:1}
+#footer{display:flex;align-items:center;gap:6px;padding:4px 10px;
+  background:var(--panel);border-top:1px solid var(--border);font-size:11px;z-index:10}
+.coords{color:var(--text2);margin-right:auto}
+#play-area{display:none;position:absolute;top:0;left:0;right:0;bottom:0;
+  background:#000;z-index:100}
+#play-area iframe{width:100%;height:100%;border:none;display:block}
+#play-close{position:absolute;top:8px;right:8px;z-index:101;padding:4px 10px;
+  background:var(--danger);border:1px solid #fc5c7c;color:#fff;border-radius:4px;
+  cursor:pointer;font-size:11px}
+.btn-row{display:flex;gap:4px;flex-wrap:wrap}
+.btn-row button{flex:1;padding:4px 8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);border-radius:4px;cursor:pointer;font-size:11px}
+.btn-row button:hover{border-color:var(--accent)}
+.btn-row button.accent{background:var(--accent);border-color:var(--accent2);color:#fff}
+.btn-row button.accent:hover{background:var(--accent2)}
+#obj-list{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
+#obj-list .ol-item{padding:3px 6px;border-radius:3px;cursor:pointer;font-size:10px;
+  display:flex;justify-content:space-between;color:var(--text2)}
+#obj-list .ol-item:hover{background:var(--bg3);color:var(--text)}
+#obj-list .ol-item.active{background:var(--accent);color:#fff}
+.ol-type{font-weight:600;opacity:.7}
+.ol-pos{font-family:monospace;font-size:9px}
+input[type=file]{display:none}
+.snap-info{font-size:9px;color:var(--warn);text-align:center;min-height:14px}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>⬡ Level Editor</h1>
+  <button class="tool-btn active" data-tool="select" title="Select (V)">↖ Select</button>
+  <button class="tool-btn" data-tool="player" title="Player (P)">🧑 Player</button>
+  <button class="tool-btn" data-tool="block" title="Block (B)">▣ Block</button>
+  <button class="tool-btn" data-tool="diagonal" title="Diagonal (D)">◢ Diag</button>
+  <button class="tool-btn" data-tool="spider" title="Spider (S)">🕷 Spider</button>
+  <button class="tool-btn danger" data-tool="erase" title="Erase (E)">✕ Erase</button>
+  <span class="sep"></span>
+  <button class="tool-btn" id="btn-play">▶ Play</button>
+  <button class="tool-btn" id="btn-new">New</button>
+  <button class="tool-btn" id="btn-load">📂 Load</button>
+  <button class="tool-btn" id="btn-save">💾 Save</button>
+  <span class="sep"></span>
+  <label>Grid: <input type="checkbox" id="chk-grid" checked></label>
+  <label>Snap: <input type="checkbox" id="chk-snap" checked></label>
+  <span style="color:var(--text2);font-size:10px">| Zoom: <span id="zoom-label">1.0</span>x</span>
+</div>
+
+<div id="main">
+  <div id="canvas-wrap">
+    <canvas id="c"></canvas>
+    <div id="play-area">
+      <button id="play-close">✕ Return to Editor</button>
+      <iframe id="game-frame" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="side-section">
+      <h2>Room</h2>
+      <div class="prop-row">
+        <div class="field"><label>Width</label><input type="number" id="room-w" value="3000" min="480" step="16"></div>
+        <div class="field"><label>Height</label><input type="number" id="room-h" value="3000" min="270" step="16"></div>
+      </div>
+    </div>
+    <div class="side-section" id="prop-section">
+      <h2>Properties</h2>
+      <div id="prop-empty" style="color:var(--text2)">No object selected.</div>
+      <div id="prop-fields" style="display:none;flex-direction:column;gap:4px">
+        <div class="field"><label>Type</label><input id="p-type" readonly style="font-weight:600"></div>
+        <div class="prop-row">
+          <div class="field"><label>X</label><input type="number" id="p-x" step="1"></div>
+          <div class="field"><label>Y</label><input type="number" id="p-y" step="1"></div>
+        </div>
+        <div id="prop-block-extras" style="display:none">
+          <div class="prop-row">
+            <div class="field"><label>Width</label><input type="number" id="p-w" step="16" min="16"></div>
+            <div class="field"><label>Height</label><input type="number" id="p-h" step="16" min="16"></div>
+          </div>
+        </div>
+        <div id="prop-diag-extras" style="display:none">
+          <div class="prop-row">
+            <div class="field"><label>Width</label><input type="number" id="p-dw" step="16" min="16"></div>
+            <div class="field"><label>Height</label><input type="number" id="p-dh" step="16" min="16"></div>
+          </div>
+          <div class="field"><label>Slope</label>
+            <select id="p-slope">
+              <option value="1">\ (down-right)</option>
+              <option value="-1">/ (down-left)</option>
+            </select>
+          </div>
+        </div>
+        <div id="prop-enemy-extras" style="display:none">
+          <div class="field"><label>Type</label><input id="p-enemy-type" readonly value="spider"></div>
+          <div class="prop-row">
+            <div class="field"><label>Health</label><input type="number" id="p-health" min="1" step="1"></div>
+            <div class="field"><label>Speed</label><input type="number" id="p-speed" min="0.1" step="0.1"></div>
+          </div>
+          <div class="prop-row">
+            <div class="field"><label>Range</label><input type="number" id="p-range" min="16" step="16"></div>
+            <div class="field"><label>Patrol</label><input type="number" id="p-patrol" min="16" step="16"></div>
+          </div>
+        </div>
+        <div id="prop-player-extras" style="display:none">
+          <div class="field"><label>Scale X</label><input type="number" id="p-sx" step="1" value="-7"></div>
+          <div class="field"><label>Scale Y</label><input type="number" id="p-sy" step="1" value="9"></div>
+        </div>
+        <button id="prop-delete" style="background:var(--danger);border:1px solid #fc5c7c;color:#fff;border-radius:3px;padding:3px 8px;cursor:pointer;font-size:10px;margin-top:2px">Delete Object</button>
+      </div>
+    </div>
+    <div class="side-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+      <h2>Objects</h2>
+      <div id="obj-list"></div>
+    </div>
+    <div class="side-section">
+      <div class="snap-info" id="snap-info">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<div id="footer">
+  <span class="coords" id="coords">Room: —</span>
+  <span id="status">Ready</span>
+</div>
+
+<input type="file" id="file-input" accept=".json">
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════════
+// LEVEL DATA MODEL
+// ══════════════════════════════════════════════════════════════════════════════
+
+const GRID = 16;
+const GRID_HALF = GRID / 2;
+const SNAP_THRESHOLD = 8;
+
+let roomW = 3000, roomH = 3000;
+let playerData = null; // { x, y, scaleX, scaleY } or null
+let blocks = [];
+let diagonalBlocks = [];
+let enemies = [];
+
+let selectedObj = null; // ref to object in its array, or playerData
+let selectedType = null; // 'player' | 'block' | 'diagonal' | 'enemy'
+let dragState = null;
+let resizeState = null;
+
+// ── Canvas state ──
+let camX = 0, camY = 0;
+let zoom = 1.0;
+const MIN_ZOOM = 0.1, MAX_ZOOM = 5;
+
+let currentTool = 'select';
+let mouseX = 0, mouseY = 0; // room coords
+
+// ── Snap guide data ──
+let snapGuides = []; // { x1,y1, x2,y2, axis:'h'|'v' }
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TOOLS
+// ══════════════════════════════════════════════════════════════════════════════
+
+const TOOLS = ['select', 'player', 'block', 'diagonal', 'spider', 'erase'];
+
+// ══════════════════════════════════════════════════════════════════════════════
+// RENDERER
+// ══════════════════════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const wrap = document.getElementById('canvas-wrap');
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  render();
+}
+
+function roomToScreen(rx, ry) {
+  return [(rx - camX) * zoom, (ry - camY) * zoom];
+}
+
+function screenToRoom(sx, sy) {
+  return [sx / zoom + camX, sy / zoom + camY];
+}
+
+function roundToGrid(v) {
+  return Math.round(v / GRID) * GRID;
+}
+
+// ── Snap system ──
+function findSnaps(ox, oy, ow, oh, excludeObj) {
+  const guides = [];
+  const threshold = SNAP_THRESHOLD / zoom;
+  const edges = [];
+
+  function addObjEdges(obj, type) {
+    if (!obj) return;
+    let x, y, w, h;
+    if (type === 'player') { x = obj.x - 8; y = obj.y - 12; w = 16; h = 24; }
+    else if (type === 'block' || type === 'diagonal') { x = obj.x; y = obj.y; w = obj.w; h = obj.h; }
+    else if (type === 'enemy') { x = obj.x - 20; y = obj.y - 20; w = 40; h = 40; }
+    else return;
+    if (obj === excludeObj) return;
+    edges.push({ l: x, r: x + w, t: y, b: y + h, cx: x + w / 2, cy: y + h / 2 });
+  }
+
+  // Room edges
+  edges.push({ l: 0, r: roomW, t: 0, b: roomH, cx: roomW / 2, cy: roomH / 2 });
+
+  addObjEdges(playerData, 'player');
+  blocks.forEach(b => addObjEdges(b, 'block'));
+  diagonalBlocks.forEach(b => addObjEdges(b, 'diagonal'));
+  enemies.forEach(e => addObjEdges(e, 'enemy'));
+
+  const ol = ox, or = ox + ow, ot = oy, ob = oy + oh;
+  const ocx = ox + ow / 2, ocy = oy + oh / 2;
+
+  const candidates = [];
+
+  for (const e of edges) {
+    // Vertical alignments
+    if (Math.abs(ol - e.l) < threshold) candidates.push({ x: e.l, y1: Math.min(ot, e.t), y2: Math.max(ob, e.b), axis: 'v', snapTo: e.l - ol });
+    if (Math.abs(or - e.r) < threshold) candidates.push({ x: e.r, y1: Math.min(ot, e.t), y2: Math.max(ob, e.b), axis: 'v', snapTo: e.r - or });
+    if (Math.abs(ol - e.r) < threshold) candidates.push({ x: e.r, y1: Math.min(ot, e.t), y2: Math.max(ob, e.b), axis: 'v', snapTo: e.r - ol });
+    if (Math.abs(or - e.l) < threshold) candidates.push({ x: e.l, y1: Math.min(ot, e.t), y2: Math.max(ob, e.b), axis: 'v', snapTo: e.l - or });
+    if (Math.abs(ocx - e.cx) < threshold) candidates.push({ x: e.cx, y1: Math.min(ot, e.t), y2: Math.max(ob, e.b - e.t + ot), axis: 'v', snapTo: e.cx - ocx });
+
+    // Horizontal alignments
+    if (Math.abs(ot - e.t) < threshold) candidates.push({ y: e.t, x1: Math.min(ol, e.l), x2: Math.max(or, e.r), axis: 'h', snapTo: e.t - ot });
+    if (Math.abs(ob - e.b) < threshold) candidates.push({ y: e.b, x1: Math.min(ol, e.l), x2: Math.max(or, e.r), axis: 'h', snapTo: e.b - ob });
+    if (Math.abs(ot - e.b) < threshold) candidates.push({ y: e.b, x1: Math.min(ol, e.l), x2: Math.max(or, e.r), axis: 'h', snapTo: e.b - ot });
+    if (Math.abs(ob - e.t) < threshold) candidates.push({ y: e.t, x1: Math.min(ol, e.l), x2: Math.max(or, e.r), axis: 'h', snapTo: e.t - ob });
+    if (Math.abs(ocy - e.cy) < threshold) candidates.push({ y: e.cy, x1: Math.min(ol, e.l), x2: Math.max(or, e.r - e.l + ol), axis: 'h', snapTo: e.cy - ocy });
+  }
+
+  return candidates;
+}
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Room area
+  const [rsx, rsy] = roomToScreen(0, 0);
+  const rrW = roomW * zoom;
+  const rrH = roomH * zoom;
+  ctx.fillStyle = '#161625';
+  ctx.fillRect(rsx, rsy, rrW, rrH);
+
+  // Grid
+  if (document.getElementById('chk-grid').checked) {
+    ctx.strokeStyle = 'rgba(60,60,90,0.3)';
+    ctx.lineWidth = 0.5;
+    const gs = GRID * zoom;
+    const startX = Math.floor(camX / GRID) * GRID;
+    const startY = Math.floor(camY / GRID) * GRID;
+    for (let x = startX; x < camX + canvas.width / zoom + GRID; x += GRID) {
+      const [sx] = roomToScreen(x, 0);
+      ctx.beginPath(); ctx.moveTo(sx, rsy); ctx.lineTo(sx, rsy + rrH); ctx.stroke();
+    }
+    for (let y = startY; y < camY + canvas.height / zoom + GRID; y += GRID) {
+      const [, sy] = roomToScreen(0, y);
+      ctx.beginPath(); ctx.moveTo(rsx, sy); ctx.lineTo(rsx + rrW, sy); ctx.stroke();
+    }
+  }
+
+  // Room border
+  ctx.strokeStyle = '#3a3a5e';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(rsx, rsy, rrW, rrH);
+
+  // Helper: draw centered rect
+  function drawCenteredRect(x, y, w, h, fill, stroke) {
+    const [sx, sy] = roomToScreen(x, y);
+    const sw = w * zoom, sh = h * zoom;
+    ctx.fillStyle = fill;
+    ctx.fillRect(sx, sy, sw, sh);
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.strokeRect(sx, sy, sw, sh); }
+  }
+
+  // Blocks
+  for (const b of blocks) {
+    const col = '#ffffff';
+    drawCenteredRect(b.x, b.y, b.w, b.h, col, '#555');
+    // Corner dots
+    const [sx, sy] = roomToScreen(b.x, b.y);
+    const sw = b.w * zoom, sh = b.h * zoom;
+    ctx.fillStyle = '#aaa';
+    const ds = 3;
+    [[sx, sy], [sx + sw, sy], [sx, sy + sh], [sx + sw, sy + sh]].forEach(([px, py]) => {
+      ctx.beginPath(); ctx.arc(px, py, ds, 0, Math.PI * 2); ctx.fill();
+    });
+  }
+
+  // Diagonal blocks
+  for (const d of diagonalBlocks) {
+    const [sx, sy] = roomToScreen(d.x, d.y);
+    const sw = d.w * zoom, sh = d.h * zoom;
+    ctx.fillStyle = '#6ac';
+    ctx.strokeStyle = '#369';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    if (d.slopeDir === 1) {
+      ctx.moveTo(sx, sy + sh); ctx.lineTo(sx + sw, sy + sh); ctx.lineTo(sx, sy);
+    } else {
+      ctx.moveTo(sx, sy + sh); ctx.lineTo(sx + sw, sy + sh); ctx.lineTo(sx + sw, sy);
+    }
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+
+  // Player
+  if (playerData) {
+    const [sx, sy] = roomToScreen(playerData.x - 8, playerData.y - 12);
+    const pw = 16 * zoom, ph = 24 * zoom;
+    // Body capsule
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 1;
+    const rad = 4 * zoom;
+    ctx.beginPath();
+    ctx.moveTo(sx + rad, sy);
+    ctx.lineTo(sx + pw - rad, sy);
+    ctx.quadraticCurveTo(sx + pw, sy, sx + pw, sy + rad);
+    ctx.lineTo(sx + pw, sy + ph - rad);
+    ctx.quadraticCurveTo(sx + pw, sy + ph, sx + pw - rad, sy + ph);
+    ctx.lineTo(sx + rad, sy + ph);
+    ctx.quadraticCurveTo(sx, sy + ph, sx, sy + ph - rad);
+    ctx.lineTo(sx, sy + rad);
+    ctx.quadraticCurveTo(sx, sy, sx + rad, sy);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Head circle
+    const [hx, hy] = roomToScreen(playerData.x, playerData.y - 12);
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#555';
+    ctx.beginPath(); ctx.arc(hx, hy, 6 * zoom, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+    // Direction indicator
+    const dir = playerData.scaleX < 0 ? -1 : 1;
+    const [dx, dy] = roomToScreen(playerData.x + dir * 10, playerData.y);
+    ctx.strokeStyle = '#7c5cfc';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(dx, dy); ctx.stroke();
+  }
+
+  // Enemies (spiders)
+  for (const e of enemies) {
+    const [sx, sy] = roomToScreen(e.x, e.y);
+    const r = 20 * zoom;
+    // Body
+    ctx.fillStyle = '#222';
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    // Eye
+    const eyeDir = e.spawnConfig.facing === 1 ? 1 : -1;
+    ctx.fillStyle = '#ff4444';
+    ctx.beginPath(); ctx.arc(sx + eyeDir * 8 * zoom, sy - 2 * zoom, 3 * zoom, 0, Math.PI * 2); ctx.fill();
+    // Legs indicator
+    ctx.strokeStyle = '#666';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.PI / 2;
+      const len = 30 * zoom;
+      const ex = sx + Math.cos(a) * len;
+      const ey = sy + Math.sin(a) * len;
+      ctx.beginPath(); ctx.moveTo(sx + Math.cos(a) * r, sy + Math.sin(a) * r); ctx.lineTo(ex, ey); ctx.stroke();
+    }
+    // Health label
+    ctx.fillStyle = '#ff0';
+    ctx.font = `${Math.max(8, 10 * zoom)}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`❤${e.spawnConfig.health}`, sx, sy + r + 12 * zoom);
+  }
+
+  // Snap guides
+  ctx.setLineDash([4, 4]);
+  for (const g of snapGuides) {
+    if (g.axis === 'v') {
+      const [sx] = roomToScreen(g.x, 0);
+      const [sy1, sy2] = roomToScreen(0, g.y1);
+      const [, sy2b] = roomToScreen(0, g.y2);
+      ctx.strokeStyle = '#ffaa00';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(sx, sy1); ctx.lineTo(sx, sy2b); ctx.stroke();
+    } else {
+      const [sx1] = roomToScreen(g.x1, 0);
+      const [sx2] = roomToScreen(g.x2, 0);
+      const [, sy] = roomToScreen(0, g.y);
+      ctx.strokeStyle = '#ffaa00';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(sx1, sy); ctx.lineTo(sx2, sy); ctx.stroke();
+    }
+  }
+  ctx.setLineDash([]);
+
+  // Selection highlight
+  if (selectedObj && selectedType) {
+    let sx, sy, sw, sh;
+    if (selectedType === 'player') {
+      const [px, py] = roomToScreen(playerData.x - 8, playerData.y - 12);
+      sx = px; sy = py; sw = 16 * zoom; sh = 24 * zoom;
+    } else if (selectedType === 'block') {
+      const [px, py] = roomToScreen(selectedObj.x, selectedObj.y);
+      sx = px; sy = py; sw = selectedObj.w * zoom; sh = selectedObj.h * zoom;
+    } else if (selectedType === 'diagonal') {
+      const [px, py] = roomToScreen(selectedObj.x, selectedObj.y);
+      sx = px; sy = py; sw = selectedObj.w * zoom; sh = selectedObj.h * zoom;
+    } else if (selectedType === 'enemy') {
+      const [px, py] = roomToScreen(selectedObj.x - 20, selectedObj.y - 20);
+      sx = px; sy = py; sw = 40 * zoom; sh = 40 * zoom;
+    }
+    ctx.strokeStyle = '#7c5cfc';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+    ctx.strokeRect(sx - 2, sy - 2, sw + 4, sh + 4);
+    ctx.setLineDash([]);
+
+    // Resize handles for blocks
+    if (selectedType === 'block' || selectedType === 'diagonal') {
+      const handles = [
+        [sx, sy, 'nw'], [sx + sw, sy, 'ne'],
+        [sx, sy + sh, 'sw'], [sx + sw, sy + sh, 'se'],
+        [sx + sw / 2, sy, 'n'], [sx + sw / 2, sy + sh, 's'],
+        [sx, sy + sh / 2, 'w'], [sx + sw, sy + sh / 2, 'e']
+      ];
+      for (const [hx, hy] of handles) {
+        ctx.fillStyle = '#7c5cfc';
+        ctx.fillRect(hx - 3, hy - 3, 6, 6);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(hx - 3, hy - 3, 6, 6);
+      }
+    }
+  }
+
+  // Tool preview (show object under cursor)
+  if (currentTool !== 'select' && currentTool !== 'erase' && !dragState) {
+    const [rx, ry] = screenToRoom(mouseX, mouseY);
+    const gx = roundToGrid(rx), gy = roundToGrid(ry);
+    ctx.globalAlpha = 0.4;
+    if (currentTool === 'block') {
+      drawCenteredRect(gx, gy, GRID, GRID, '#fff', '#555');
+    } else if (currentTool === 'diagonal') {
+      const [sx, sy] = roomToScreen(gx, gy);
+      const sw = GRID * zoom, sh = GRID * zoom;
+      ctx.fillStyle = '#6ac';
+      ctx.beginPath();
+      ctx.moveTo(sx, sy + sh); ctx.lineTo(sx + sw, sy + sh); ctx.lineTo(sx, sy);
+      ctx.closePath(); ctx.fill();
+    } else if (currentTool === 'player') {
+      const [sx, sy] = roomToScreen(gx - 8, gy - 12);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(sx, sy, 16 * zoom, 24 * zoom);
+    } else if (currentTool === 'spider') {
+      const [sx, sy] = roomToScreen(gx, gy);
+      ctx.fillStyle = '#222';
+      ctx.beginPath(); ctx.arc(sx, sy, 20 * zoom, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // Object list
+  updateObjectList();
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// OBJECT LIST
+// ══════════════════════════════════════════════════════════════════════════════
+
+function updateObjectList() {
+  const list = document.getElementById('obj-list');
+  let html = '';
+  if (playerData) {
+    html += `<div class="ol-item ${selectedObj === playerData ? 'active' : ''}" data-id="player">
+      <span><span class="ol-type">PLAYER</span></span>
+      <span class="ol-pos">${playerData.x}, ${playerData.y}</span></div>`;
+  }
+  blocks.forEach((b, i) => {
+    html += `<div class="ol-item ${selectedObj === b ? 'active' : ''}" data-id="block-${i}">
+      <span><span class="ol-type">BLOCK</span></span>
+      <span class="ol-pos">${b.x}, ${b.y}</span></div>`;
+  });
+  diagonalBlocks.forEach((d, i) => {
+    html += `<div class="ol-item ${selectedObj === d ? 'active' : ''}" data-id="diag-${i}">
+      <span><span class="ol-type">DIAG</span></span>
+      <span class="ol-pos">${d.x}, ${d.y}</span></div>`;
+  });
+  enemies.forEach((e, i) => {
+    html += `<div class="ol-item ${selectedObj === e ? 'active' : ''}" data-id="enemy-${i}">
+      <span><span class="ol-type">SPIDER</span></span>
+      <span class="ol-pos">${e.x}, ${e.y}</span></div>`;
+  });
+  list.innerHTML = html || '<div style="color:var(--text2);font-size:10px;padding:4px">No objects.</div>';
+
+  list.querySelectorAll('.ol-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      selectObject(id);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SELECTION
+// ══════════════════════════════════════════════════════════════════════════════
+
+function selectObject(id) {
+  if (!id) { clearSelection(); render(); return; }
+  if (id === 'player') { selectedObj = playerData; selectedType = 'player'; }
+  else if (id.startsWith('block-')) { const i = parseInt(id.split('-')[1]); selectedObj = blocks[i]; selectedType = 'block'; }
+  else if (id.startsWith('diag-')) { const i = parseInt(id.split('-')[1]); selectedObj = diagonalBlocks[i]; selectedType = 'diagonal'; }
+  else if (id.startsWith('enemy-')) { const i = parseInt(id.split('-')[1]); selectedObj = enemies[i]; selectedType = 'enemy'; }
+  updateProperties();
+  render();
+}
+
+function clearSelection() {
+  selectedObj = null;
+  selectedType = null;
+  document.getElementById('prop-empty').style.display = '';
+  document.getElementById('prop-fields').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PROPERTIES PANEL
+// ══════════════════════════════════════════════════════════════════════════════
+
+function updateProperties() {
+  const empty = document.getElementById('prop-empty');
+  const fields = document.getElementById('prop-fields');
+  if (!selectedObj || !selectedType) { empty.style.display = ''; fields.style.display = 'none'; return; }
+  empty.style.display = 'none';
+  fields.style.display = 'flex';
+
+  document.getElementById('p-type').value = selectedType.toUpperCase();
+  document.getElementById('p-x').value = Math.round(selectedObj.x);
+  document.getElementById('p-y').value = Math.round(selectedObj.y);
+
+  document.getElementById('prop-block-extras').style.display = 'none';
+  document.getElementById('prop-diag-extras').style.display = 'none';
+  document.getElementById('prop-enemy-extras').style.display = 'none';
+  document.getElementById('prop-player-extras').style.display = 'none';
+
+  if (selectedType === 'block') {
+    document.getElementById('prop-block-extras').style.display = '';
+    document.getElementById('p-w').value = selectedObj.w;
+    document.getElementById('p-h').value = selectedObj.h;
+  } else if (selectedType === 'diagonal') {
+    document.getElementById('prop-diag-extras').style.display = '';
+    document.getElementById('p-dw').value = selectedObj.w;
+    document.getElementById('p-dh').value = selectedObj.h;
+    document.getElementById('p-slope').value = selectedObj.slopeDir;
+  } else if (selectedType === 'enemy') {
+    document.getElementById('prop-enemy-extras').style.display = '';
+    document.getElementById('p-enemy-type').value = selectedObj.type || 'spider';
+    document.getElementById('p-health').value = selectedObj.spawnConfig.health;
+    document.getElementById('p-speed').value = selectedObj.spawnConfig.moveSpeed;
+    document.getElementById('p-range').value = selectedObj.spawnConfig.detectionRange;
+    document.getElementById('p-patrol').value = selectedObj.spawnConfig.patrolRadius;
+  } else if (selectedType === 'player') {
+    document.getElementById('prop-player-extras').style.display = '';
+    document.getElementById('p-sx').value = selectedObj.scaleX;
+    document.getElementById('p-sy').value = selectedObj.scaleY;
+  }
+}
+
+function applyProperties() {
+  if (!selectedObj || !selectedType) return;
+  selectedObj.x = parseFloat(document.getElementById('p-x').value) || 0;
+  selectedObj.y = parseFloat(document.getElementById('p-y').value) || 0;
+
+  if (selectedType === 'block') {
+    selectedObj.w = Math.max(16, parseFloat(document.getElementById('p-w').value) || 16);
+    selectedObj.h = Math.max(16, parseFloat(document.getElementById('p-h').value) || 16);
+  } else if (selectedType === 'diagonal') {
+    selectedObj.w = Math.max(16, parseFloat(document.getElementById('p-dw').value) || 16);
+    selectedObj.h = Math.max(16, parseFloat(document.getElementById('p-dh').value) || 16);
+    selectedObj.slopeDir = parseInt(document.getElementById('p-slope').value) || 1;
+  } else if (selectedType === 'enemy') {
+    selectedObj.spawnConfig.health = Math.max(1, parseInt(document.getElementById('p-health').value) || 3);
+    selectedObj.spawnConfig.moveSpeed = parseFloat(document.getElementById('p-speed').value) || 2.5;
+    selectedObj.spawnConfig.detectionRange = parseFloat(document.getElementById('p-range').value) || 300;
+    selectedObj.spawnConfig.patrolRadius = parseFloat(document.getElementById('p-patrol').value) || 150;
+  } else if (selectedType === 'player') {
+    selectedObj.scaleX = parseInt(document.getElementById('p-sx').value) || -7;
+    selectedObj.scaleY = parseInt(document.getElementById('p-sy').value) || 9;
+  }
+  render();
+}
+
+// ── Property change listeners ──
+document.querySelectorAll('#prop-fields input, #prop-fields select').forEach(el => {
+  el.addEventListener('input', applyProperties);
+  el.addEventListener('change', applyProperties);
+});
+
+document.getElementById('prop-delete').addEventListener('click', () => {
+  if (!selectedObj || !selectedType) return;
+  deleteObject(selectedObj, selectedType);
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// OBJECT CRUD
+// ══════════════════════════════════════════════════════════════════════════════
+
+function placeObject(tool, rx, ry) {
+  const gx = roundToGrid(rx), gy = roundToGrid(ry);
+  if (gx < 0 || gy < 0 || gx > roomW || gy > roomH) return;
+
+  if (tool === 'player') {
+    if (playerData) { playerData.x = gx; playerData.y = gy; selectObject('player'); }
+    else { playerData = { x: gx, y: gy, scaleX: -7, scaleY: 9 }; selectObject('player'); }
+  } else if (tool === 'block') {
+    const b = { x: gx, y: gy, w: GRID, h: GRID };
+    blocks.push(b);
+    selectedObj = b; selectedType = 'block';
+    updateProperties();
+  } else if (tool === 'diagonal') {
+    const d = { x: gx, y: gy, w: GRID, h: GRID, slopeDir: 1 };
+    diagonalBlocks.push(d);
+    selectedObj = d; selectedType = 'diagonal';
+    updateProperties();
+  } else if (tool === 'spider') {
+    const e = {
+      x: gx, y: gy, type: 'spider',
+      spawnConfig: {
+        health: 3, facing: 1, patrolRadius: 150,
+        moveSpeed: 2.5, detectionRange: 300, detectionAngleDeg: 120
+      }
+    };
+    enemies.push(e);
+    selectedObj = e; selectedType = 'enemy';
+    updateProperties();
+  }
+  render();
+}
+
+function deleteObject(obj, type) {
+  if (type === 'player') { playerData = null; }
+  else if (type === 'block') { const i = blocks.indexOf(obj); if (i >= 0) blocks.splice(i, 1); }
+  else if (type === 'diagonal') { const i = diagonalBlocks.indexOf(obj); if (i >= 0) diagonalBlocks.splice(i, 1); }
+  else if (type === 'enemy') { const i = enemies.indexOf(obj); if (i >= 0) enemies.splice(i, 1); }
+  clearSelection();
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// HIT TESTING
+// ══════════════════════════════════════════════════════════════════════════════
+
+function hitTest(rx, ry) {
+  // Check blocks (last drawn = on top)
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    const b = blocks[i];
+    if (rx >= b.x && rx <= b.x + b.w && ry >= b.y && ry <= b.y + b.h)
+      return { obj: b, type: 'block', id: `block-${i}` };
+  }
+  for (let i = diagonalBlocks.length - 1; i >= 0; i--) {
+    const d = diagonalBlocks[i];
+    if (rx >= d.x && rx <= d.x + d.w && ry >= d.y && ry <= d.y + d.h)
+      return { obj: d, type: 'diagonal', id: `diag-${i}` };
+  }
+  if (playerData) {
+    if (rx >= playerData.x - 8 && rx <= playerData.x + 8 && ry >= playerData.y - 12 && ry <= playerData.y + 12)
+      return { obj: playerData, type: 'player', id: 'player' };
+  }
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    if (rx >= e.x - 20 && rx <= e.x + 20 && ry >= e.y - 20 && ry <= e.y + 20)
+      return { obj: e, type: 'enemy', id: `enemy-${i}` };
+  }
+  return null;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// MOUSE EVENTS
+// ══════════════════════════════════════════════════════════════════════════════
+
+let isPanning = false;
+let panStartX, panStartY, panCamX, panCamY;
+let isDragging = false;
+let dragStartMX, dragStartMY, dragObjX, dragObjY;
+let resizeHandle = null;
+let resizeStartMX, resizeStartMY, resizeStartW, resizeStartH;
+
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const [rx, ry] = screenToRoom(sx, sy);
+
+  if (e.button === 1 || (e.shiftKey && e.button === 0)) {
+    isPanning = true;
+    panStartX = sx; panStartY = sy;
+    panCamX = camX; panCamY = camY;
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  if (currentTool === 'erase') {
+    const hit = hitTest(rx, ry);
+    if (hit) deleteObject(hit.obj, hit.type);
+    return;
+  }
+
+  if (currentTool === 'select') {
+    // Check for resize handle hit
+    if (selectedObj && (selectedType === 'block' || selectedType === 'diagonal')) {
+      const [bsx, bsy] = roomToScreen(selectedObj.x, selectedObj.y);
+      const bsw = selectedObj.w * zoom, bsh = selectedObj.h * zoom;
+      const handles = {
+        'nw': [bsx, bsy], 'ne': [bsx + bsw, bsy],
+        'sw': [bsx, bsy + bsh], 'se': [bsx + bsw, bsy + bsh],
+        'n': [bsx + bsw / 2, bsy], 's': [bsx + bsw / 2, bsy + bsh],
+        'w': [bsx, bsy + bsh / 2], 'e': [bsx + bsw, bsy + bsh / 2]
+      };
+      for (const [handle, [hx, hy]] of Object.entries(handles)) {
+        if (Math.abs(sx - hx) < 6 && Math.abs(sy - hy) < 6) {
+          resizeHandle = handle;
+          resizeStartMX = rx; resizeStartMY = ry;
+          resizeStartW = selectedObj.w; resizeStartH = selectedObj.h;
+          return;
+        }
+      }
+    }
+
+    const hit = hitTest(rx, ry);
+    if (hit) {
+      isDragging = true;
+      dragStartMX = rx; dragStartMY = ry;
+      dragObjX = hit.obj.x; dragObjY = hit.obj.y;
+      selectedObj = hit.obj; selectedType = hit.type;
+      updateProperties();
+      canvas.style.cursor = 'grabbing';
+    } else {
+      clearSelection();
+    }
+    render();
+    return;
+  }
+
+  // Place object
+  placeObject(currentTool, rx, ry);
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const [rx, ry] = screenToRoom(sx, sy);
+  mouseX = sx; mouseY = sy;
+
+  document.getElementById('coords').textContent = `Room: ${Math.round(rx)}, ${Math.round(ry)}`;
+
+  if (isPanning) {
+    const dx = (sx - panStartX) / zoom;
+    const dy = (sy - panStartY) / zoom;
+    camX = panCamX - dx;
+    camY = panCamY - dy;
+    render();
+    return;
+  }
+
+  if (resizeHandle && selectedObj) {
+    const dx = rx - dragStartMX;
+    const dy = ry - dragStartMY;
+    let nw = resizeStartW, nh = resizeStartH;
+    let nx = selectedObj.x, ny = selectedObj.y;
+
+    if (resizeHandle.includes('e')) { nw = resizeStartW + dx; }
+    if (resizeHandle.includes('w')) { nw = resizeStartW - dx; nx = selectedObj.x + dx; }
+    if (resizeHandle.includes('s')) { nh = resizeStartH + dy; }
+    if (resizeHandle.includes('n')) { nh = resizeStartH - dy; ny = selectedObj.y + dy; }
+
+    nw = Math.max(GRID, Math.round(nw / GRID) * GRID);
+    nh = Math.max(GRID, Math.round(nh / GRID) * GRID);
+    selectedObj.w = nw; selectedObj.h = nh;
+    selectedObj.x = Math.round(nx / GRID) * GRID;
+    selectedObj.y = Math.round(ny / GRID) * GRID;
+    updateProperties();
+    render();
+    return;
+  }
+
+  if (isDragging && selectedObj) {
+    const dx = rx - dragStartMX;
+    const dy = ry - dragStartMY;
+    let newX = Math.round((dragObjX + dx) / GRID) * GRID;
+    let newY = Math.round((dragObjY + dy) / GRID) * GRID;
+
+    // Smart snap
+    snapGuides = [];
+    if (document.getElementById('chk-snap').checked) {
+      let ow, oh;
+      if (selectedType === 'player') { ow = 16; oh = 24; }
+      else if (selectedType === 'block' || selectedType === 'diagonal') { ow = selectedObj.w; oh = selectedObj.h; }
+      else if (selectedType === 'enemy') { ow = 40; oh = 40; }
+      else { ow = GRID; oh = GRID; }
+
+      const snaps = findSnaps(newX, newY, ow, oh, selectedObj);
+      // Apply nearest snap
+      let minDist = Infinity;
+      let snapDx = 0, snapDy = 0;
+      for (const s of snaps) {
+        if (s.axis === 'v' && Math.abs(s.snapTo) < Math.abs(minDist)) {
+          minDist = s.snapTo;
+          snapDx = s.snapTo;
+          snapDy = 0;
+        }
+        if (s.axis === 'h' && Math.abs(s.snapTo) < Math.abs(minDist)) {
+          minDist = s.snapTo;
+          snapDx = 0;
+          snapDy = s.snapTo;
+        }
+      }
+      if (Math.abs(minDist) < SNAP_THRESHOLD) {
+        newX += snapDx;
+        newY += snapDy;
+        snapGuides = snaps.filter(s => Math.abs(s.snapTo) < SNAP_THRESHOLD + 1);
+        document.getElementById('snap-info').textContent = '⬡ Snap!';
+      } else {
+        snapGuides = [];
+        document.getElementById('snap-info').innerHTML = '&nbsp;';
+      }
+    }
+
+    selectedObj.x = Math.round(newX);
+    selectedObj.y = Math.round(newY);
+    updateProperties();
+    render();
+    return;
+  }
+
+  // Hover cursor
+  canvas.style.cursor = currentTool === 'select' ? 'default' : 'crosshair';
+  if (!isDragging && !resizeHandle) render();
+});
+
+canvas.addEventListener('mouseup', (e) => {
+  if (isPanning) { isPanning = false; canvas.style.cursor = 'default'; render(); return; }
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'default';
+    snapGuides = [];
+    render();
+    return;
+  }
+  if (resizeHandle) {
+    resizeHandle = null;
+    render();
+    return;
+  }
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const [rx0, ry0] = screenToRoom(sx, sy);
+
+  const factor = e.deltaY < 0 ? 1.1 : 0.9;
+  zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom * factor));
+
+  // Zoom towards mouse
+  const [rx1, ry1] = screenToRoom(sx, sy);
+  camX += rx0 - rx1;
+  camY += ry0 - ry1;
+
+  document.getElementById('zoom-label').textContent = zoom.toFixed(1);
+  render();
+});
+
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// ══════════════════════════════════════════════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════════════════════════════════════════════
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key === 'v') setTool('select');
+  else if (key === 'p') setTool('player');
+  else if (key === 'b') setTool('block');
+  else if (key === 'd') setTool('diagonal');
+  else if (key === 's') setTool('spider');
+  else if (key === 'e') setTool('erase');
+  else if (key === 'delete' || key === 'backspace') {
+    if (selectedObj && selectedType) deleteObject(selectedObj, selectedType);
+  }
+  // arrow keys to nudge
+  else if (['arrowup','arrowdown','arrowleft','arrowright'].includes(key) && selectedObj) {
+    e.preventDefault();
+    const step = e.shiftKey ? 1 : GRID;
+    if (key === 'arrowleft') selectedObj.x -= step;
+    else if (key === 'arrowright') selectedObj.x += step;
+    else if (key === 'arrowup') selectedObj.y -= step;
+    else if (key === 'arrowdown') selectedObj.y += step;
+    updateProperties();
+    render();
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TOOL MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════════
+
+function setTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.tool-btn[data-tool]').forEach(b => {
+    b.classList.toggle('active', b.dataset.tool === tool);
+  });
+  canvas.style.cursor = tool === 'select' ? 'default' : 'crosshair';
+}
+
+document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+  btn.addEventListener('click', () => setTool(btn.dataset.tool));
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SAVE / LOAD
+// ══════════════════════════════════════════════════════════════════════════════
+
+function serializeLevel() {
+  var data = {
+    formatVersion: 1,
+    room: { width: roomW, height: roomH },
+    blocks: blocks.map(b => ({ ...b })),
+    diagonalBlocks: diagonalBlocks.map(d => ({ ...d })),
+    enemies: enemies.map(e => ({
+      type: e.type,
+      x: e.x, y: e.y,
+      spawnConfig: { ...e.spawnConfig }
+    }))
+  };
+  if (playerData) data.player = { ...playerData };
+  return data;
+}
+
+function deserializeLevel(data) {
+  roomW = data.room?.width ?? 3000;
+  roomH = data.room?.height ?? 3000;
+  document.getElementById('room-w').value = roomW;
+  document.getElementById('room-h').value = roomH;
+  playerData = data.player || null;
+  blocks = data.blocks || [];
+  diagonalBlocks = data.diagonalBlocks || [];
+  enemies = (data.enemies || []).map(e => ({
+    ...e,
+    spawnConfig: e.spawnConfig || { health: 3, facing: 1, patrolRadius: 150, moveSpeed: 2.5, detectionRange: 300, detectionAngleDeg: 120 }
+  }));
+  clearSelection();
+  render();
+}
+
+document.getElementById('btn-new').addEventListener('click', () => {
+  if (!confirm('Clear all objects and start a new level?')) return;
+  playerData = null;
+  blocks = [];
+  diagonalBlocks = [];
+  enemies = [];
+  roomW = 3000;
+  roomH = 3000;
+  document.getElementById('room-w').value = roomW;
+  document.getElementById('room-h').value = roomH;
+  clearSelection();
+  // Create default floor
+  const floorY = roomH - 32;
+  blocks.push({ x: 0, y: floorY, w: roomW, h: 32 });
+  playerData = { x: 200, y: floorY - 26, scaleX: -7, scaleY: 9 };
+  selectObject('player');
+  document.getElementById('status').textContent = 'New level created';
+  render();
+});
+
+document.getElementById('btn-save').addEventListener('click', () => {
+  const data = serializeLevel();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'level.json'; a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('status').textContent = 'Saved level.json';
+});
+
+document.getElementById('btn-load').addEventListener('click', () => {
+  document.getElementById('file-input').click();
+});
+
+document.getElementById('file-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      deserializeLevel(data);
+      document.getElementById('status').textContent = `Loaded ${file.name}`;
+    } catch (ex) {
+      alert('Failed to parse level file: ' + ex.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// Auto-save to localStorage
+function autoSave() {
+  try {
+    const data = serializeLevel();
+    localStorage.setItem('sg_level_editor', JSON.stringify(data));
+  } catch(ex) {}
+}
+
+// Auto-save every 30s
+setInterval(autoSave, 30000);
+
+// Try to restore auto-save
+try {
+  const saved = localStorage.getItem('sg_level_editor');
+  if (saved) {
+    const data = JSON.parse(saved);
+    if (data.formatVersion) {
+      deserializeLevel(data);
+      document.getElementById('status').textContent = 'Restored auto-saved level';
+    }
+  }
+} catch(ex) {}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ROOM SIZE
+// ══════════════════════════════════════════════════════════════════════════════
+
+document.getElementById('room-w').addEventListener('change', () => {
+  roomW = Math.max(480, parseInt(document.getElementById('room-w').value) || 3000);
+  render();
+});
+document.getElementById('room-h').addEventListener('change', () => {
+  roomH = Math.max(270, parseInt(document.getElementById('room-h').value) || 3000);
+  render();
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PLAY (EMBED GAME)
+// ══════════════════════════════════════════════════════════════════════════════
+
+const playArea = document.getElementById('play-area');
+const gameFrame = document.getElementById('game-frame');
+const playClose = document.getElementById('play-close');
+
+function sendLevelToGame(data) {
+  if (!gameFrame.contentWindow) return;
+  gameFrame.contentWindow.postMessage(
+    JSON.stringify({ type: 'loadLevel', data }),
+    '*'
+  );
+  document.getElementById('status').textContent = 'Level sent to game!';
+}
+
+function sendLevelRetry(data, retries) {
+  if (!gameFrame.contentWindow) {
+    if (retries > 0) {
+      setTimeout(() => sendLevelRetry(data, retries - 1), 200);
+    } else {
+      document.getElementById('status').textContent = 'Game not responding';
+    }
+    return;
+  }
+  sendLevelToGame(data);
+}
+
+document.getElementById('btn-play').addEventListener('click', () => {
+  const data = serializeLevel();
+
+  // Ensure iframe is set to the game
+  if (!gameFrame.src || gameFrame.src === location.href || gameFrame.src === 'about:blank') {
+    gameFrame.src = 'game/index.html?editor=1';
+  }
+
+  playArea.style.display = 'block';
+  document.getElementById('status').textContent = 'Loading game...';
+
+  // Give the game time to initialise, then send level data
+  setTimeout(() => sendLevelRetry(data, 10), 600);
+});
+
+playClose.addEventListener('click', () => {
+  playArea.style.display = 'none';
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════════════════
+
+window.addEventListener('resize', resizeCanvas);
+
+// Set initial tool
+setTool('select');
+
+resizeCanvas();
+
+// If autosave restored data, skip default level
+if (!playerData && blocks.length === 0 && enemies.length === 0) {
+  // Create a small default platform to start with
+  const floorY = roomH - 32;
+  blocks.push({ x: 0, y: floorY, w: roomW, h: 32 });
+  playerData = { x: 200, y: floorY - 26, scaleX: -7, scaleY: 9 };
+  render();
+  document.getElementById('status').textContent = 'Default level created — edit and play!';
+}
+</script>
+</body>
+</html>

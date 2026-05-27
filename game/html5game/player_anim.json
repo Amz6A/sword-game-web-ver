@@ -1,0 +1,1473 @@
+{
+  "rig": {
+    "root_name": "pelvis",
+    "bones": [
+      {
+        "id": 0,
+        "name": "pelvis",
+        "parent": -1,
+        "length": 0
+      },
+      {
+        "id": 1,
+        "name": "spine",
+        "parent": 0,
+        "length": 14
+      },
+      {
+        "id": 2,
+        "name": "head",
+        "parent": 1,
+        "length": 8
+      },
+      {
+        "id": 3,
+        "name": "thigh_l",
+        "parent": 0,
+        "length": 12
+      },
+      {
+        "id": 4,
+        "name": "shin_l",
+        "parent": 3,
+        "length": 10
+      },
+      {
+        "id": 5,
+        "name": "thigh_r",
+        "parent": 0,
+        "length": 12
+      },
+      {
+        "id": 6,
+        "name": "shin_r",
+        "parent": 5,
+        "length": 10
+      },
+      {
+        "id": 7,
+        "name": "upper_arm_l",
+        "parent": 1,
+        "length": 10
+      },
+      {
+        "id": 8,
+        "name": "forearm_l",
+        "parent": 7,
+        "length": 8
+      },
+      {
+        "id": 9,
+        "name": "upper_arm_r",
+        "parent": 1,
+        "length": 10
+      },
+      {
+        "id": 10,
+        "name": "forearm_r",
+        "parent": 9,
+        "length": 8
+      }
+    ]
+  },
+  "animations": {
+    "idle": {
+      "length_frames": 60,
+      "loop": true,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 100
+          },
+          {
+            "id": 4,
+            "angle": -15
+          },
+          {
+            "id": 5,
+            "angle": 80
+          },
+          {
+            "id": 6,
+            "angle": 10
+          },
+          {
+            "id": 7,
+            "angle": 200
+          },
+          {
+            "id": 8,
+            "angle": -10
+          },
+          {
+            "id": 9,
+            "angle": 160
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ],
+        "30": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 4,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 102
+          },
+          {
+            "id": 4,
+            "angle": -14
+          },
+          {
+            "id": 5,
+            "angle": 78
+          },
+          {
+            "id": 6,
+            "angle": 11
+          },
+          {
+            "id": 7,
+            "angle": 202
+          },
+          {
+            "id": 8,
+            "angle": -10
+          },
+          {
+            "id": 9,
+            "angle": 158
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ]
+      }
+    },
+    "run": {
+      "length_frames": 20,
+      "loop": true,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 268
+          },
+          {
+            "id": 2,
+            "angle": 3
+          },
+          {
+            "id": 3,
+            "angle": 120
+          },
+          {
+            "id": 4,
+            "angle": -50
+          },
+          {
+            "id": 5,
+            "angle": 60
+          },
+          {
+            "id": 6,
+            "angle": -30
+          },
+          {
+            "id": 7,
+            "angle": 140
+          },
+          {
+            "id": 8,
+            "angle": 10
+          },
+          {
+            "id": 9,
+            "angle": 190
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ],
+        "5": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 2,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 95
+          },
+          {
+            "id": 4,
+            "angle": -20
+          },
+          {
+            "id": 5,
+            "angle": 85
+          },
+          {
+            "id": 6,
+            "angle": -20
+          },
+          {
+            "id": 7,
+            "angle": 170
+          },
+          {
+            "id": 8,
+            "angle": 10
+          },
+          {
+            "id": 9,
+            "angle": 170
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ],
+        "10": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 272
+          },
+          {
+            "id": 2,
+            "angle": -3
+          },
+          {
+            "id": 3,
+            "angle": 60
+          },
+          {
+            "id": 4,
+            "angle": -30
+          },
+          {
+            "id": 5,
+            "angle": 120
+          },
+          {
+            "id": 6,
+            "angle": -50
+          },
+          {
+            "id": 7,
+            "angle": 190
+          },
+          {
+            "id": 8,
+            "angle": 10
+          },
+          {
+            "id": 9,
+            "angle": 140
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ],
+        "15": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 2,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 85
+          },
+          {
+            "id": 4,
+            "angle": -20
+          },
+          {
+            "id": 5,
+            "angle": 95
+          },
+          {
+            "id": 6,
+            "angle": -20
+          },
+          {
+            "id": 7,
+            "angle": 170
+          },
+          {
+            "id": 8,
+            "angle": 10
+          },
+          {
+            "id": 9,
+            "angle": 170
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ]
+      }
+    },
+    "jump": {
+      "length_frames": 15,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 2,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 265
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 110
+          },
+          {
+            "id": 4,
+            "angle": 30
+          },
+          {
+            "id": 5,
+            "angle": 70
+          },
+          {
+            "id": 6,
+            "angle": -30
+          },
+          {
+            "id": 7,
+            "angle": 230
+          },
+          {
+            "id": 8,
+            "angle": -20
+          },
+          {
+            "id": 9,
+            "angle": 130
+          },
+          {
+            "id": 10,
+            "angle": 20
+          }
+        ],
+        "14": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 100
+          },
+          {
+            "id": 4,
+            "angle": -40
+          },
+          {
+            "id": 5,
+            "angle": 80
+          },
+          {
+            "id": 6,
+            "angle": -40
+          },
+          {
+            "id": 7,
+            "angle": 215
+          },
+          {
+            "id": 8,
+            "angle": -10
+          },
+          {
+            "id": 9,
+            "angle": 145
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ]
+      }
+    },
+    "fall": {
+      "length_frames": 10,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 275
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 105
+          },
+          {
+            "id": 4,
+            "angle": 20
+          },
+          {
+            "id": 5,
+            "angle": 75
+          },
+          {
+            "id": 6,
+            "angle": -20
+          },
+          {
+            "id": 7,
+            "angle": 210
+          },
+          {
+            "id": 8,
+            "angle": 350
+          },
+          {
+            "id": 9,
+            "angle": 150
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ]
+      }
+    },
+    "teleport": {
+      "length_frames": 16,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 100
+          },
+          {
+            "id": 4,
+            "angle": -15
+          },
+          {
+            "id": 5,
+            "angle": 80
+          },
+          {
+            "id": 6,
+            "angle": 10
+          },
+          {
+            "id": 7,
+            "angle": 200
+          },
+          {
+            "id": 8,
+            "angle": -10
+          },
+          {
+            "id": 9,
+            "angle": 160
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ],
+        "5": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 1,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 95
+          },
+          {
+            "id": 4,
+            "angle": -5
+          },
+          {
+            "id": 5,
+            "angle": 85
+          },
+          {
+            "id": 6,
+            "angle": 5
+          },
+          {
+            "id": 7,
+            "angle": 355
+          },
+          {
+            "id": 8,
+            "angle": -5
+          },
+          {
+            "id": 9,
+            "angle": 5
+          },
+          {
+            "id": 10,
+            "angle": 5
+          }
+        ],
+        "8": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 5,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 130
+          },
+          {
+            "id": 4,
+            "angle": -40
+          },
+          {
+            "id": 5,
+            "angle": 50
+          },
+          {
+            "id": 6,
+            "angle": 40
+          },
+          {
+            "id": 7,
+            "angle": 270
+          },
+          {
+            "id": 8,
+            "angle": 340
+          },
+          {
+            "id": 9,
+            "angle": 90
+          },
+          {
+            "id": 10,
+            "angle": 20
+          }
+        ],
+        "11": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 1,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 95
+          },
+          {
+            "id": 4,
+            "angle": -5
+          },
+          {
+            "id": 5,
+            "angle": 85
+          },
+          {
+            "id": 6,
+            "angle": 5
+          },
+          {
+            "id": 7,
+            "angle": 355
+          },
+          {
+            "id": 8,
+            "angle": -5
+          },
+          {
+            "id": 9,
+            "angle": 5
+          },
+          {
+            "id": 10,
+            "angle": 5
+          }
+        ],
+        "15": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 3,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 0
+          },
+          {
+            "id": 3,
+            "angle": 100
+          },
+          {
+            "id": 4,
+            "angle": -15
+          },
+          {
+            "id": 5,
+            "angle": 80
+          },
+          {
+            "id": 6,
+            "angle": 10
+          },
+          {
+            "id": 7,
+            "angle": 200
+          },
+          {
+            "id": 8,
+            "angle": -10
+          },
+          {
+            "id": 9,
+            "angle": 160
+          },
+          {
+            "id": 10,
+            "angle": 10
+          }
+        ]
+      }
+    },
+    "grip_wall": {
+      "length_frames": 20,
+      "loop": true,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 2,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 100
+          },
+          {
+            "id": 4,
+            "angle": -44
+          },
+          {
+            "id": 5,
+            "angle": 80
+          },
+          {
+            "id": 6,
+            "angle": -31.5
+          },
+          {
+            "id": 7,
+            "angle": -150
+          },
+          {
+            "id": 8,
+            "angle": -32
+          },
+          {
+            "id": 9,
+            "angle": -205
+          },
+          {
+            "id": 10,
+            "angle": -389.5
+          }
+        ]
+      }
+    },
+    "grip_hang": {
+      "length_frames": 60,
+      "loop": true,
+      "keyframes": {
+        "0": [
+          {
+            "id": 0,
+            "x": 0,
+            "y": 5,
+            "angle": 0
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 83.5
+          },
+          {
+            "id": 4,
+            "angle": -30
+          },
+          {
+            "id": 5,
+            "angle": 63
+          },
+          {
+            "id": 6,
+            "angle": -30
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ],
+        "12": [
+          {
+            "id": 0,
+            "angle": 0,
+            "x": 0,
+            "y": 5
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 103.5
+          },
+          {
+            "id": 4,
+            "angle": -35
+          },
+          {
+            "id": 5,
+            "angle": 83.5
+          },
+          {
+            "id": 6,
+            "angle": -21
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ],
+        "24": [
+          {
+            "id": 0,
+            "angle": 0,
+            "x": 0,
+            "y": 5
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 134.5
+          },
+          {
+            "id": 4,
+            "angle": -36.5
+          },
+          {
+            "id": 5,
+            "angle": 111.5
+          },
+          {
+            "id": 6,
+            "angle": -27
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ],
+        "36": [
+          {
+            "id": 0,
+            "angle": 0,
+            "x": 0,
+            "y": 5
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 126.5
+          },
+          {
+            "id": 4,
+            "angle": 26
+          },
+          {
+            "id": 5,
+            "angle": 106
+          },
+          {
+            "id": 6,
+            "angle": 27
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ],
+        "48": [
+          {
+            "id": 0,
+            "angle": 0,
+            "x": 0,
+            "y": 5
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 83.5
+          },
+          {
+            "id": 4,
+            "angle": 47
+          },
+          {
+            "id": 5,
+            "angle": 62.5
+          },
+          {
+            "id": 6,
+            "angle": 42
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ],
+        "60": [
+          {
+            "id": 0,
+            "angle": 0,
+            "x": 0,
+            "y": 5
+          },
+          {
+            "id": 1,
+            "angle": 270
+          },
+          {
+            "id": 2,
+            "angle": 5
+          },
+          {
+            "id": 3,
+            "angle": 83.5
+          },
+          {
+            "id": 4,
+            "angle": -30
+          },
+          {
+            "id": 5,
+            "angle": 63
+          },
+          {
+            "id": 6,
+            "angle": -30
+          },
+          {
+            "id": 7,
+            "angle": -375.5
+          },
+          {
+            "id": 8,
+            "angle": 28
+          },
+          {
+            "id": 9,
+            "angle": -325.5
+          },
+          {
+            "id": 10,
+            "angle": -411.5
+          }
+        ]
+      }
+    },
+    "chain_1_blue": {
+      "length_frames": 10,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":268},
+          {"id":2,"angle":5},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":340},
+          {"id":8,"angle":-40},
+          {"id":9,"angle":20},
+          {"id":10,"angle":30}
+        ],
+        "3": [
+          {"id":0,"x":2,"y":2,"angle":0},
+          {"id":1,"angle":260},
+          {"id":2,"angle":10},
+          {"id":3,"angle":110},
+          {"id":4,"angle":-30},
+          {"id":5,"angle":70},
+          {"id":6,"angle":-20},
+          {"id":7,"angle":290},
+          {"id":8,"angle":-60},
+          {"id":9,"angle":70},
+          {"id":10,"angle":50}
+        ],
+        "6": [
+          {"id":0,"x":3,"y":3,"angle":0},
+          {"id":1,"angle":265},
+          {"id":2,"angle":0},
+          {"id":3,"angle":105},
+          {"id":4,"angle":-20},
+          {"id":5,"angle":75},
+          {"id":6,"angle":-15},
+          {"id":7,"angle":310},
+          {"id":8,"angle":-30},
+          {"id":9,"angle":45},
+          {"id":10,"angle":40}
+        ],
+        "9": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    },
+    "chain_2_blue": {
+      "length_frames": 10,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ],
+        "2": [
+          {"id":0,"x":-2,"y":2,"angle":0},
+          {"id":1,"angle":275},
+          {"id":2,"angle":-5},
+          {"id":3,"angle":90},
+          {"id":4,"angle":-10},
+          {"id":5,"angle":90},
+          {"id":6,"angle":5},
+          {"id":7,"angle":140},
+          {"id":8,"angle":20},
+          {"id":9,"angle":220},
+          {"id":10,"angle":-20}
+        ],
+        "5": [
+          {"id":0,"x":-3,"y":2,"angle":0},
+          {"id":1,"angle":268},
+          {"id":2,"angle":5},
+          {"id":3,"angle":95},
+          {"id":4,"angle":-25},
+          {"id":5,"angle":85},
+          {"id":6,"angle":-10},
+          {"id":7,"angle":120},
+          {"id":8,"angle":30},
+          {"id":9,"angle":240},
+          {"id":10,"angle":-30}
+        ],
+        "9": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    },
+    "chain_3_blue": {
+      "length_frames": 12,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ],
+        "3": [
+          {"id":0,"x":0,"y":0,"angle":0},
+          {"id":1,"angle":255},
+          {"id":2,"angle":15},
+          {"id":3,"angle":130},
+          {"id":4,"angle":-40},
+          {"id":5,"angle":50},
+          {"id":6,"angle":-40},
+          {"id":7,"angle":310},
+          {"id":8,"angle":-50},
+          {"id":9,"angle":40},
+          {"id":10,"angle":40}
+        ],
+        "7": [
+          {"id":0,"x":4,"y":4,"angle":0},
+          {"id":1,"angle":262},
+          {"id":2,"angle":8},
+          {"id":3,"angle":115},
+          {"id":4,"angle":-35},
+          {"id":5,"angle":65},
+          {"id":6,"angle":-30},
+          {"id":7,"angle":280},
+          {"id":8,"angle":-60},
+          {"id":9,"angle":25},
+          {"id":10,"angle":50}
+        ],
+        "11": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    },
+    "chain_1_yellow": {
+      "length_frames": 10,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ],
+        "2": [
+          {"id":0,"x":1,"y":2,"angle":0},
+          {"id":1,"angle":265},
+          {"id":2,"angle":8},
+          {"id":3,"angle":110},
+          {"id":4,"angle":-20},
+          {"id":5,"angle":70},
+          {"id":6,"angle":-20},
+          {"id":7,"angle":210},
+          {"id":8,"angle":-5},
+          {"id":9,"angle":170},
+          {"id":10,"angle":5}
+        ],
+        "5": [
+          {"id":0,"x":2,"y":1,"angle":0},
+          {"id":1,"angle":258},
+          {"id":2,"angle":12},
+          {"id":3,"angle":120},
+          {"id":4,"angle":-30},
+          {"id":5,"angle":60},
+          {"id":6,"angle":-20},
+          {"id":7,"angle":180},
+          {"id":8,"angle":0},
+          {"id":9,"angle":200},
+          {"id":10,"angle":0}
+        ],
+        "9": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    },
+    "chain_2_yellow": {
+      "length_frames": 10,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ],
+        "3": [
+          {"id":0,"x":-1,"y":1,"angle":0},
+          {"id":1,"angle":272},
+          {"id":2,"angle":-3},
+          {"id":3,"angle":95},
+          {"id":4,"angle":-10},
+          {"id":5,"angle":85},
+          {"id":6,"angle":5},
+          {"id":7,"angle":220},
+          {"id":8,"angle":-15},
+          {"id":9,"angle":140},
+          {"id":10,"angle":15}
+        ],
+        "6": [
+          {"id":0,"x":-2,"y":2,"angle":0},
+          {"id":1,"angle":275},
+          {"id":2,"angle":-8},
+          {"id":3,"angle":90},
+          {"id":4,"angle":5},
+          {"id":5,"angle":90},
+          {"id":6,"angle":15},
+          {"id":7,"angle":240},
+          {"id":8,"angle":-25},
+          {"id":9,"angle":120},
+          {"id":10,"angle":20}
+        ],
+        "9": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    },
+    "chain_3_yellow": {
+      "length_frames": 12,
+      "loop": false,
+      "keyframes": {
+        "0": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ],
+        "2": [
+          {"id":0,"x":1,"y":0,"angle":0},
+          {"id":1,"angle":260},
+          {"id":2,"angle":10},
+          {"id":3,"angle":125},
+          {"id":4,"angle":-35},
+          {"id":5,"angle":55},
+          {"id":6,"angle":-30},
+          {"id":7,"angle":185},
+          {"id":8,"angle":5},
+          {"id":9,"angle":190},
+          {"id":10,"angle":-5}
+        ],
+        "6": [
+          {"id":0,"x":3,"y":1,"angle":0},
+          {"id":1,"angle":255},
+          {"id":2,"angle":15},
+          {"id":3,"angle":130},
+          {"id":4,"angle":-40},
+          {"id":5,"angle":50},
+          {"id":6,"angle":-40},
+          {"id":7,"angle":300},
+          {"id":8,"angle":-55},
+          {"id":9,"angle":50},
+          {"id":10,"angle":45}
+        ],
+        "11": [
+          {"id":0,"x":0,"y":3,"angle":0},
+          {"id":1,"angle":270},
+          {"id":2,"angle":0},
+          {"id":3,"angle":100},
+          {"id":4,"angle":-15},
+          {"id":5,"angle":80},
+          {"id":6,"angle":10},
+          {"id":7,"angle":200},
+          {"id":8,"angle":-10},
+          {"id":9,"angle":160},
+          {"id":10,"angle":10}
+        ]
+      }
+    }
+  }
+}
