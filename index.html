@@ -355,7 +355,7 @@ function render() {
 
   // Player
   if (playerData) {
-    const [sx, sy] = roomToScreen(playerData.x - 8, playerData.y - 12);
+    const [sx, sy] = roomToScreen(playerData.x - 8, playerData.y - 24);
     const pw = 16 * zoom, ph = 24 * zoom;
     // Body capsule
     ctx.fillStyle = '#fff';
@@ -375,14 +375,14 @@ function render() {
     ctx.closePath(); ctx.fill(); ctx.stroke();
 
     // Head circle
-    const [hx, hy] = roomToScreen(playerData.x, playerData.y - 12);
+    const [hx, hy] = roomToScreen(playerData.x, playerData.y - 24);
     ctx.fillStyle = '#fff';
     ctx.strokeStyle = '#555';
     ctx.beginPath(); ctx.arc(hx, hy, 6 * zoom, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
     // Direction indicator
     const dir = playerData.scaleX < 0 ? -1 : 1;
-    const [dx, dy] = roomToScreen(playerData.x + dir * 10, playerData.y);
+    const [dx, dy] = roomToScreen(playerData.x + dir * 10, playerData.y - 24);
     ctx.strokeStyle = '#7c5cfc';
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(dx, dy); ctx.stroke();
@@ -655,7 +655,7 @@ function placeObject(tool, rx, ry) {
 
   if (tool === 'player') {
     if (playerData) { playerData.x = gx; playerData.y = gy; selectObject('player'); }
-    else { playerData = { x: gx, y: gy, scaleX: -7, scaleY: 9 }; selectObject('player'); }
+    else { playerData = { x: gx, y: gy, scaleX: 1, scaleY: 1 }; selectObject('player'); }
   } else if (tool === 'block') {
     const b = { x: gx, y: gy, w: GRID, h: GRID };
     blocks.push(b);
@@ -707,7 +707,7 @@ function hitTest(rx, ry) {
       return { obj: d, type: 'diagonal', id: `diag-${i}` };
   }
   if (playerData) {
-    if (rx >= playerData.x - 8 && rx <= playerData.x + 8 && ry >= playerData.y - 12 && ry <= playerData.y + 12)
+    if (rx >= playerData.x - 8 && rx <= playerData.x + 8 && ry >= playerData.y - 24 && ry <= playerData.y)
       return { obj: playerData, type: 'player', id: 'player' };
   }
   for (let i = enemies.length - 1; i >= 0; i--) {
@@ -808,8 +808,8 @@ canvas.addEventListener('mousemove', (e) => {
   }
 
   if (resizeHandle && selectedObj) {
-    const dx = rx - dragStartMX;
-    const dy = ry - dragStartMY;
+    const dx = rx - resizeStartMX;
+    const dy = ry - resizeStartMY;
     let nw = resizeStartW, nh = resizeStartH;
     let nx = selectedObj.x, ny = selectedObj.y;
 
@@ -1013,7 +1013,7 @@ document.getElementById('btn-new').addEventListener('click', () => {
   // Create default floor
   const floorY = roomH - 32;
   blocks.push({ x: 0, y: floorY, w: roomW, h: 32 });
-  playerData = { x: 200, y: floorY - 26, scaleX: -7, scaleY: 9 };
+  playerData = { x: 200, y: floorY - 24, scaleX: 1, scaleY: 1 };
   selectObject('player');
   document.getElementById('status').textContent = 'New level created';
   render();
@@ -1095,6 +1095,12 @@ const playArea = document.getElementById('play-area');
 const gameFrame = document.getElementById('game-frame');
 const playClose = document.getElementById('play-close');
 
+function sendGameMessage(data) {
+  if (gameFrame.contentWindow) {
+    gameFrame.contentWindow.postMessage(JSON.stringify(data), '*');
+  }
+}
+
 function sendLevelToGame(data) {
   if (!gameFrame.contentWindow) return;
   gameFrame.contentWindow.postMessage(
@@ -1118,31 +1124,21 @@ function sendLevelRetry(data, retries) {
 
 document.getElementById('btn-play').addEventListener('click', () => {
   const data = serializeLevel();
-
-  // Ensure iframe is set to the game
-  if (!gameFrame.src || gameFrame.src === location.href || gameFrame.src === 'about:blank') {
-    gameFrame.src = 'game/index.html?editor=1';
-  }
-
   playArea.style.display = 'block';
   document.getElementById('status').textContent = 'Loading game...';
 
-  // Give the game time to initialise, then send level data + unmute
-  setTimeout(() => {
+  const onGameLoaded = () => {
+    gameFrame.removeEventListener('load', onGameLoaded);
     sendGameMessage({ type: 'gameVisible', value: true });
-    sendLevelRetry(data, 10);
-  }, 600);
+    sendLevelRetry(data, 15);
+  };
+  gameFrame.addEventListener('load', onGameLoaded);
+  gameFrame.src = 'game/index.html?editor=1';
 });
-
-function sendGameMessage(data) {
-  if (gameFrame.contentWindow) {
-    gameFrame.contentWindow.postMessage(JSON.stringify(data), '*');
-  }
-}
 
 playClose.addEventListener('click', () => {
   playArea.style.display = 'none';
-  sendGameMessage({ type: 'gameVisible', value: false });
+  gameFrame.src = 'about:blank';
 });
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1161,7 +1157,7 @@ if (!playerData && blocks.length === 0 && enemies.length === 0) {
   // Create a small default platform to start with
   const floorY = roomH - 32;
   blocks.push({ x: 0, y: floorY, w: roomW, h: 32 });
-  playerData = { x: 200, y: floorY - 26, scaleX: -7, scaleY: 9 };
+  playerData = { x: 200, y: floorY - 24, scaleX: 1, scaleY: 1 };
   render();
   document.getElementById('status').textContent = 'Default level created — edit and play!';
 }
