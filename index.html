@@ -727,7 +727,7 @@ let panStartX, panStartY, panCamX, panCamY;
 let isDragging = false;
 let dragStartMX, dragStartMY, dragObjX, dragObjY;
 let resizeHandle = null;
-let resizeStartMX, resizeStartMY, resizeStartW, resizeStartH;
+let resizeStartMX, resizeStartMY, resizeStartW, resizeStartH, resizeStartX, resizeStartY;
 
 canvas.addEventListener('mousedown', (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -765,6 +765,7 @@ canvas.addEventListener('mousedown', (e) => {
           resizeHandle = handle;
           resizeStartMX = rx; resizeStartMY = ry;
           resizeStartW = selectedObj.w; resizeStartH = selectedObj.h;
+          resizeStartX = selectedObj.x; resizeStartY = selectedObj.y;
           return;
         }
       }
@@ -810,19 +811,32 @@ canvas.addEventListener('mousemove', (e) => {
   if (resizeHandle && selectedObj) {
     const dx = rx - resizeStartMX;
     const dy = ry - resizeStartMY;
+    const rightEdge = resizeStartX + resizeStartW;
+    const bottomEdge = resizeStartY + resizeStartH;
+    let nx = resizeStartX, ny = resizeStartY;
     let nw = resizeStartW, nh = resizeStartH;
-    let nx = selectedObj.x, ny = selectedObj.y;
 
-    if (resizeHandle.includes('e')) { nw = resizeStartW + dx; }
-    if (resizeHandle.includes('w')) { nw = resizeStartW - dx; nx = selectedObj.x + dx; }
-    if (resizeHandle.includes('s')) { nh = resizeStartH + dy; }
-    if (resizeHandle.includes('n')) { nh = resizeStartH - dy; ny = selectedObj.y + dy; }
+    if (resizeHandle.includes('e')) {
+      nw = Math.max(GRID, Math.round((resizeStartW + dx) / GRID) * GRID);
+      nx = rightEdge - nw;
+    }
+    if (resizeHandle.includes('w')) {
+      nx = Math.round((resizeStartX + dx) / GRID) * GRID;
+      nw = rightEdge - nx;
+      if (nw < GRID) { nw = GRID; nx = rightEdge - GRID; }
+    }
+    if (resizeHandle.includes('s')) {
+      nh = Math.max(GRID, Math.round((resizeStartH + dy) / GRID) * GRID);
+      ny = bottomEdge - nh;
+    }
+    if (resizeHandle.includes('n')) {
+      ny = Math.round((resizeStartY + dy) / GRID) * GRID;
+      nh = bottomEdge - ny;
+      if (nh < GRID) { nh = GRID; ny = bottomEdge - GRID; }
+    }
 
-    nw = Math.max(GRID, Math.round(nw / GRID) * GRID);
-    nh = Math.max(GRID, Math.round(nh / GRID) * GRID);
+    selectedObj.x = nx; selectedObj.y = ny;
     selectedObj.w = nw; selectedObj.h = nh;
-    selectedObj.x = Math.round(nx / GRID) * GRID;
-    selectedObj.y = Math.round(ny / GRID) * GRID;
     updateProperties();
     render();
     return;
